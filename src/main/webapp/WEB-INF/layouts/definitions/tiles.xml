@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="baseLayout" template="/WEB-INF/layouts/template/base.jsp">
+        <put-attribute name="titolo" value=""/>
+        <put-attribute name="content" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/layouts/template/footer.jsp"/>
+    </definition>
+
+    <definition name="index" extends="baseLayout">
+        <put-attribute name="titolo" value="Benvenuti su RentalKars"/>
+        <put-attribute name="content" value="/WEB-INF/view/welcome.jsp"/>
+    </definition>
+
+    <definition name="cars_list" extends="baseLayout">
+        <put-attribute name="titolo" value="RentalKars: Parco Auto"/>
+        <put-attribute name="content" value="/WEB-INF/view/cars_list.jsp"/>
+    </definition>
+
+    <definition name="users_list" extends="baseLayout">
+        <put-attribute name="titolo" value="RentalKars: Lista Utenti"/>
+        <put-attribute name="content" value="/WEB-INF/view/users_list.jsp"/>
+    </definition>
+
+    <definition name="reservations_list" extends="baseLayout">
+        <put-attribute name="titolo" value="RentalKars: Prenotazioni"/>
+        <put-attribute name="content" value="/WEB-INF/view/reservations_list.jsp"/>
+    </definition>
+
+    <definition name="car_form" extends="baseLayout">
+        <put-attribute name="titolo" value="RentalKars: Form Auto"/>
+        <put-attribute name="content" value="/WEB-INF/view/car_form.jsp"/>
+    </definition>
+
+    <definition name="user_form" extends="baseLayout">
+        <put-attribute name="titolo" value="RentalKars: Form Utente"/>
+        <put-attribute name="content" value="/WEB-INF/view/user_form.jsp"/>
+    </definition>
+
+    <definition name="reservation_form" extends="baseLayout">
+        <put-attribute name="titolo" value="RentalKars: Form Noleggio"/>
+        <put-attribute name="content" value="/WEB-INF/view/reservation_form.jsp"/>
+    </definition>
+
+</tiles-definitions>

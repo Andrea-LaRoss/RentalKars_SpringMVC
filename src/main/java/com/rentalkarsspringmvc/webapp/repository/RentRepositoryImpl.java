@@ -5,6 +5,7 @@ import com.rentalkarsspringmvc.webapp.entities.Car;
 import com.rentalkarsspringmvc.webapp.entities.Rent;
 import com.rentalkarsspringmvc.webapp.entities.User;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.List;
 @Repository
 public class RentRepositoryImpl implements RentRepository{
 
+    private Transaction tx;
 
     @Override
     public void saveRent(Rent rent) {

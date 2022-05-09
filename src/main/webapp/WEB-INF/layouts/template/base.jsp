@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="cars_list">Parco Auto</a>
+                    <a class="nav-link" href="<spring:url value="cars/list"/>">Parco Auto</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="reservations_list">Account</a>

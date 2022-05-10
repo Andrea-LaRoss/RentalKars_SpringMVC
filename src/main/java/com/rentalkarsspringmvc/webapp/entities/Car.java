@@ -89,8 +89,8 @@ public class Car implements Serializable {
         return regDate;
     }
 
-    public void setRegDate(LocalDate regDate) {
-        this.regDate = regDate;
+    public void setRegDate(String regDate) {
+        this.regDate = LocalDate.parse(regDate);
     }
 
     public Set<Rent> getReservation() { return reservation; }

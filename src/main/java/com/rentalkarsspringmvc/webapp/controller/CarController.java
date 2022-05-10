@@ -5,6 +5,7 @@ import com.rentalkarsspringmvc.webapp.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,19 +19,25 @@ public class CarController {
     private CarService carService;
 
 
-    @GetMapping("/form")
-    public String saveCarForm(Model model) {
-        Car carForm = new Car();
+    @InitBinder
+    public void initialiseBinder(WebDataBinder binder){
+
+    }
+
+
+    @GetMapping("/add")
+    public String saveCarForm(@ModelAttribute("carForm") Car carForm, Model model) {
         model.addAttribute("carForm", carForm);
         model.addAttribute("Titolo", "Aggiungi auto");
         return "car_form";
     }
 
 
-    @PostMapping ("/form")
+    @PostMapping ("/add")
     public String saveCar(@ModelAttribute("carForm") Car carForm, Model model) {
-    /*
-        if(carService.selByPlate(carForm.getNumPlate()) != null) {
+
+       /* Aggiungere dopo che mi rendo conto di come gestire l'eccezione
+       if(carService.selByPlate(carForm.getNumPlate()) != null) {
             model.addAttribute("errorMsg", "Errore. Targa già registrata");
             model.addAttribute("carForm", carForm);
             return "car_form";
@@ -41,12 +48,11 @@ public class CarController {
             model.addAttribute("errorMsg", "Errore. La data è nel futuro");
             model.addAttribute("carForm", carForm);
             return "car_form";
-        }
+        }*/
 
         carService.saveCar(carForm);
 
-*/
-        System.out.println(carForm.getManufacturer());
+        System.out.println(carForm.getRegDate());
         return "redirect:/cars";
 
     }
@@ -64,8 +70,8 @@ public class CarController {
     }
 
 
-    @PutMapping("/form/update")
-    public String updateCar(Long id, String manufacturer, String modello, String type, String numPlate, LocalDate regDate, Model model) {
+   /* @PostMapping("/form/update")
+    public String updateCar(, Model model) {
 
         if(carService.selByPlate(numPlate) != null) {
             model.addAttribute("errorMsg", "Errore. Targa già registrata");
@@ -88,10 +94,10 @@ public class CarController {
         carService.updateCar(car);
 
         return listCars(model);
-    }
+    }*/
 
 
-    @DeleteMapping("/remove/{id}")
+    @GetMapping("/remove/{id}")
     public String deleteCar(@PathVariable("id") String id, Model model) {
 
         Car car = carService.selById(Long.valueOf(id));

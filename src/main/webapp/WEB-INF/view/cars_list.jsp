@@ -44,7 +44,7 @@
 
 
         <div class="d-grid gap-2">
-            <a class="btn btn-lg btn-primary" href="<spring:url value="/cars/form" />"><strong>Aggiungi</strong></a>
+            <a class="btn btn-lg btn-primary" href="<spring:url value="/cars/add" />"><strong>Aggiungi</strong></a>
         </div>
 
 </div>

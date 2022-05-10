@@ -1,6 +1,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="container">
     <h2>${Titolo}</h2>
@@ -37,7 +38,7 @@
             </div>
 
             <div class="form-floating mb-4">
-                <form:input type="date" class="form-control" id="regDate" required="required" path="regDate"/>
+                <form:input type="date" class="form-control" id="regDate" required="required" path="regDate" value="dateString"/>
                 <label for="regDate">Immatricolazione</label>
             </div>
 

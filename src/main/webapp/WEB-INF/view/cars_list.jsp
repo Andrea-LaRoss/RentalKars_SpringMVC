@@ -42,9 +42,9 @@
         </tbody>
     </table>
 
-    <c:if test="${loggedUser.admin eq true}">
+
         <div class="d-grid gap-2">
-            <a class="btn btn-info" href="<spring:url value="/cars/car_form" />"><strong>Aggiungi</strong></a>
+            <a class="btn btn-lg btn-primary" href="<spring:url value="/cars/form" />"><strong>Aggiungi</strong></a>
         </div>
-    </c:if>
+
 </div>

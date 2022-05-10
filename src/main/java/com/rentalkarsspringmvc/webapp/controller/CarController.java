@@ -18,37 +18,63 @@ public class CarController {
     private CarService carService;
 
 
-    @GetMapping("/form/save")
-    public void saveCar(String manufacturer, String modello, String type, String numPlate, LocalDate regDate, Model model) {
+    @GetMapping("/form")
+    public String saveCarForm(Model model) {
+        Car carForm = new Car();
+        model.addAttribute("carForm", carForm);
+        model.addAttribute("Titolo", "Aggiungi auto");
+        return "car_form";
+    }
 
-        if(carService.selByPlate(numPlate) != null) {
+
+    @PostMapping ("/form")
+    public String saveCar(@ModelAttribute("carForm") Car carForm, Model model) {
+    /*
+        if(carService.selByPlate(carForm.getNumPlate()) != null) {
             model.addAttribute("errorMsg", "Errore. Targa già registrata");
-            //return "car_form";
+            model.addAttribute("carForm", carForm);
+            return "car_form";
+
         }
 
-        if(regDate.isAfter(LocalDate.now())){
+        if(carForm.getRegDate().isAfter(LocalDate.now())){
             model.addAttribute("errorMsg", "Errore. La data è nel futuro");
-            //return "car_form";
+            model.addAttribute("carForm", carForm);
+            return "car_form";
         }
 
-        carService.saveCar(new Car(manufacturer, modello, type, numPlate, regDate));
+        carService.saveCar(carForm);
+
+*/
+        System.out.println(carForm.getManufacturer());
+        return "redirect:/cars";
+
+    }
 
 
-        getAllCars(model);
+    @GetMapping ("/form/{id}")
+    public String updateCarForm(@PathVariable("id") String id, Model model) {
+
+        Car car = carService.selById(Long.valueOf(id));
+
+        model.addAttribute("Titolo", "Modifica auto");
+        model.addAttribute("car", car);
+
+        return "car_form";
     }
 
 
     @PutMapping("/form/update")
-    public void updateCar(Long id, String manufacturer, String modello, String type, String numPlate, LocalDate regDate, Model model) {
+    public String updateCar(Long id, String manufacturer, String modello, String type, String numPlate, LocalDate regDate, Model model) {
 
         if(carService.selByPlate(numPlate) != null) {
             model.addAttribute("errorMsg", "Errore. Targa già registrata");
-           // return "car_form"; o comunque ritorna alla pagina car_form in qualche maniera. spero. non so ancora se ho capito il metodo da usare. aiut.
+            return listCars(model);
         }
 
         if(regDate.isAfter(LocalDate.now())){
             model.addAttribute("errorMsg", "Errore. La data è nel futuro");
-           // return "car_form";
+            return listCars(model);
         }
 
         Car car = carService.selById(id);
@@ -61,23 +87,28 @@ public class CarController {
 
         carService.updateCar(car);
 
-        getAllCars(model);//Dovrebbe restituire la lista auto
+        return listCars(model);
     }
 
 
-    @GetMapping("/remove/{id}")
-    public void deleteCar(@PathVariable("id") String id, Model model) {
+    @DeleteMapping("/remove/{id}")
+    public String deleteCar(@PathVariable("id") String id, Model model) {
 
         Car car = carService.selById(Long.valueOf(id));
         carService.removeCar(car);
 
-        getAllCars(model);
+        return listCars(model);
+
     }
 
 
     @GetMapping
     public String getAllCars(Model model) {
+        return listCars(model);
+    }
 
+
+    public String listCars(Model model) {
         List<Car> cars = carService.getCars();
 
         model.addAttribute("Titolo", "Listino Auto");
@@ -85,17 +116,4 @@ public class CarController {
 
         return "cars_list";
     }
-
-
-    @GetMapping("/form/{id}")
-    public String getCarForm(@RequestParam("id") String id, Model model) {
-
-        Car car = carService.selById(Long.valueOf(id));
-
-        model.addAttribute("Titolo", "Modifica auto");
-        model.addAttribute("car", car);
-
-        return "car_form";
-    }
-
 }

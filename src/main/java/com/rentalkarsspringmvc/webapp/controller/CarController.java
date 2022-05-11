@@ -68,7 +68,7 @@ public class CarController {
         carForm.setModel(car.getModel());
         carForm.setType(car.getType());
         carForm.setNumPlate(car.getNumPlate());
-        //carForm.setRegDate(car.getRegDate());
+        carForm.setRegDate(String.valueOf(car.getRegDate()));
 
         model.addAttribute("Titolo", "Modifica auto");
         model.addAttribute("carForm", carForm);
@@ -93,6 +93,7 @@ public class CarController {
         carService.updateCar(carForm);
 
         return "redirect:/cars";
+
     }
 
 

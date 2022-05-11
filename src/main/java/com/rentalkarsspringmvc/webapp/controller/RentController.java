@@ -78,7 +78,7 @@ public class RentController {
         Rent rent = rentService.selById(Long.valueOf(id));
         rent.setStatus("Approvata");
 
-        return "/reservation";
+        return "redirect:/reservations";
 
     }
 

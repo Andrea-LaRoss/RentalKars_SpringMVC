@@ -57,7 +57,7 @@ public class UserController {
         userForm.setPassword(user.getPassword());
         userForm.setFirstName(user.getFirstName());
         userForm.setLastName(user.getLastName());
-        //userForm.setBirthday(user.getBirthday());
+        userForm.setBirthday(String.valueOf(user.getBirthday()));
 
         model.addAttribute("Titolo", "Modifica utente");
         model.addAttribute("userForm", userForm);
@@ -75,7 +75,7 @@ public class UserController {
 
         userService.updateUser(userForm);
 
-        return "redirect: /users";
+        return "redirect:/users";
 
     }
 
@@ -86,7 +86,7 @@ public class UserController {
         User user = userService.selById(Long.valueOf(id));
         userService.removeUser(user);
 
-        return "redirect: /users";
+        return "redirect:/users";
 
     }
 

@@ -13,17 +13,15 @@
         <form:errors path="*" cssClass="alert alert-danger" element="div"/>
         <div class="form-group">
 
-            <!--
             <div class="form-floating mb-4">
                 <form:input type="date" class="form-control" path="startDate"/>
-                <label for="regDate">Immatricolazione</label>
-            </div> -->
+                <label for="startDate">Data Inizio</label>
+            </div>
 
-            <!--
             <div class="form-floating mb-4">
                 <form:input type="date" class="form-control" path="endDate"/>
-                <label for="regDate">Immatricolazione</label>
-            </div> -->
+                <label for="endDate">Data Fine</label>
+            </div>
 
         </div>
 

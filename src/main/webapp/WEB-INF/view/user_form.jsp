@@ -33,12 +33,11 @@
                 <form:input type="text" class="form-control" path="lastName"/>
                 <label for="lastName">Cognome</label>
             </div>
-            <!--
+
             <div class="form-floating mb-4">
                 <form:input type="date" class="form-control" path="birthday"/>
                 <label for="birthday">Data di nascita</label>
-            </div> -->
-
+            </div>
 
         </div>
 

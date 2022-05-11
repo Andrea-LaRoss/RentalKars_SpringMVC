@@ -1,6 +1,8 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PastOrPresent;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,18 +17,29 @@ public class Car implements Serializable {
     @Column(name = "id")
     private long id;
 
+
+    @NotEmpty(message = "{NotEmpty.Car.manufacturer.validation}")
     @Column(name = "manufacturer", nullable = false)
     private String manufacturer;
 
+
+    @NotEmpty(message = "{NotEmpty.Car.model.validation}")
     @Column(name = "model", nullable = false)
     private String model;
 
+
+    @NotEmpty(message = "{NotEmpty.Car.type.validation}")
     @Column(name = "type", nullable = false)
     private String type;
 
+
+    @NotEmpty(message = "{NotEmpty.Car.numPlate.validation}")
     @Column(name = "num_plate", nullable = false, length = 128, unique = true)
     private String numPlate;
 
+
+  //  @NotEmpty(message = "{NotEmpty.Car.regDate.validation}")
+    //@PastOrPresent(message = "{PastOrPresent.Car.regDate.validation}")
     @Column(name = "reg_date")
     private LocalDate regDate;
 
@@ -85,9 +98,7 @@ public class Car implements Serializable {
         this.numPlate = numPlate;
     }
 
-    public LocalDate getRegDate() {
-        return regDate;
-    }
+    public LocalDate getRegDate() { return regDate; }
 
     public void setRegDate(String regDate) {
         this.regDate = LocalDate.parse(regDate);

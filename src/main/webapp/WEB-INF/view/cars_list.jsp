@@ -4,10 +4,6 @@
 <div class="container">
     <h2>${Titolo}</h2>
     <br><br><br>
-
-    <div>
-        <b-alert show variant="danger">${errorMsg}</b-alert>
-    </div>
 </div>
 
 

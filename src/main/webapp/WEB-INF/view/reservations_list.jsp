@@ -24,14 +24,6 @@
         </thead>
         <tbody>
         <c:forEach var="rent" items="${reservations}">
-            <c:url var="delete" value="">
-                <c:param name="command" value="DELETE"/>
-                <c:param name="rentId" value="${rent.id}"/>
-            </c:url>
-            <c:url var="approve" value="">
-                <c:param name="command" value="APPROVE"/>
-                <c:param name="rentId" value="${rent.id}"/>
-            </c:url>
             <tr class="table-secondary">
                 <td>${rent.user.firstName} ${rent.user.lastName}</td>
                 <td>${rent.car.manufacturer} ${rent.car.model}</td>
@@ -41,9 +33,9 @@
                 <td></td>
                 <td>
                     <c:if test="${loggedUser.admin eq false}">
-                        <a class="btn btn-outline-primary" href="<spring:url value="/reservation_form/${rent.id}"/>">Modifica</a>
+                        <a class="btn btn-outline-primary" href="<spring:url value="/reservations/form/${rent.id}"/>">Modifica</a>
                     </c:if>
-                    <a class="btn btn-outline-danger" href="${delete}" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
+                    <a class="btn btn-outline-danger" href="<spring:url value="/reservations/remove/${rent.id}"/>" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
                     <c:if test="${rent.status == 'In Attesa'}">
                         <c:if test="${loggedUser.admin eq true}">
                             <a class="btn btn-outline-success" href="${approve}">Approva</a>
@@ -55,10 +47,9 @@
         </tbody>
     </table>
 
-    <c:if test="${loggedUser.admin eq false}">
         <div class="d-grid gap-2">
-            <a class="btn btn-info" href=""><strong>Nuova prenotazione</strong></a>
+            <a class="btn btn-primary" href="<spring:url value="/reservations/add"/>"><strong>Nuova prenotazione</strong></a>
         </div>
-    </c:if>
+
 </div>
 

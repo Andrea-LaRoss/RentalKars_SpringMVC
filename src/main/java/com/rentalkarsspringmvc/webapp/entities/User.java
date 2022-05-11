@@ -1,6 +1,7 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,18 +16,28 @@ public class User implements Serializable {
     @Column(name = "id")
     private long id;
 
+
+    @NotEmpty(message = "{NotEmpty.User.email.validation}")
     @Column(name = "email", nullable = false, length = 128, unique = true)
     private String email;
 
+
+    @NotEmpty(message = "{NotEmpty.User.password.validation}")
     @Column(name = "password", nullable = false)
     private String password;
 
+
+    @NotEmpty(message = "{NotEmpty.User.firstName.validation}")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
+
+    @NotEmpty(message = "{NotEmpty.User.lastName.validation}")
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+
+//    @NotEmpty(message = "{NotEmpty.User.email.validation}")
     @Column(name = "birthday")
     private LocalDate birthday;
 
@@ -93,8 +104,8 @@ public class User implements Serializable {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setBirthday(String birthday) {
+        this.birthday = LocalDate.parse(birthday);
     }
 
     public boolean isAdmin() {

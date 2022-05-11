@@ -5,9 +5,11 @@ import com.rentalkarsspringmvc.webapp.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,20 +23,27 @@ public class CarController {
 
     @InitBinder
     public void initialiseBinder(WebDataBinder binder){
-
+        //Riempire il metodo per la data
     }
 
 
     @GetMapping("/add")
     public String saveCarForm(@ModelAttribute("carForm") Car carForm, Model model) {
+
         model.addAttribute("carForm", carForm);
         model.addAttribute("Titolo", "Aggiungi auto");
+
         return "car_form";
+
     }
 
 
     @PostMapping ("/add")
-    public String saveCar(@ModelAttribute("carForm") Car carForm, Model model) {
+    public String saveCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, Model model) {
+
+        if(result.hasErrors()) {
+            return "car_form";
+        }
 
        /* Aggiungere dopo che mi rendo conto di come gestire l'eccezione
        if(carService.selByPlate(carForm.getNumPlate()) != null) {
@@ -42,59 +51,49 @@ public class CarController {
             model.addAttribute("carForm", carForm);
             return "car_form";
 
-        }
-
-        if(carForm.getRegDate().isAfter(LocalDate.now())){
-            model.addAttribute("errorMsg", "Errore. La data è nel futuro");
-            model.addAttribute("carForm", carForm);
-            return "car_form";
         }*/
 
         carService.saveCar(carForm);
-
-        System.out.println(carForm.getRegDate());
         return "redirect:/cars";
 
     }
 
 
     @GetMapping ("/form/{id}")
-    public String updateCarForm(@PathVariable("id") String id, Model model) {
+    public String updateCarForm(@ModelAttribute("carForm") Car carForm, @PathVariable("id") String id, Model model) {
 
         Car car = carService.selById(Long.valueOf(id));
 
+        carForm.setManufacturer(car.getManufacturer());
+        carForm.setModel(car.getModel());
+        carForm.setType(car.getType());
+        carForm.setNumPlate(car.getNumPlate());
+        //carForm.setRegDate(car.getRegDate());
+
         model.addAttribute("Titolo", "Modifica auto");
-        model.addAttribute("car", car);
+        model.addAttribute("carForm", carForm);
 
         return "car_form";
+
     }
 
 
-   /* @PostMapping("/form/update")
-    public String updateCar(, Model model) {
+    @PostMapping("/form/update")
+    public String updateCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, Model model) {
 
-        if(carService.selByPlate(numPlate) != null) {
+       /* if(carService.selByPlate(numPlate) != null) {
             model.addAttribute("errorMsg", "Errore. Targa già registrata");
             return listCars(model);
+        }*/
+
+        if(result.hasErrors()) {
+            return "car_form";
         }
 
-        if(regDate.isAfter(LocalDate.now())){
-            model.addAttribute("errorMsg", "Errore. La data è nel futuro");
-            return listCars(model);
-        }
+        carService.updateCar(carForm);
 
-        Car car = carService.selById(id);
-
-        car.setManufacturer(manufacturer);
-        car.setModel(modello);
-        car.setType(type);
-        car.setNumPlate(numPlate);
-        car.setRegDate(regDate);
-
-        carService.updateCar(car);
-
-        return listCars(model);
-    }*/
+        return "redirect:/cars";
+    }
 
 
     @GetMapping("/remove/{id}")
@@ -103,23 +102,22 @@ public class CarController {
         Car car = carService.selById(Long.valueOf(id));
         carService.removeCar(car);
 
-        return listCars(model);
+        return "redirect:/cars";
 
     }
 
 
     @GetMapping
     public String getAllCars(Model model) {
-        return listCars(model);
-    }
 
-
-    public String listCars(Model model) {
         List<Car> cars = carService.getCars();
 
         model.addAttribute("Titolo", "Listino Auto");
         model.addAttribute("carsList", cars);
 
         return "cars_list";
+
     }
+
+
 }

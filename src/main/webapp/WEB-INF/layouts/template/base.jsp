@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="https://bootswatch.com/5/zephyr/bootstrap.css">
     <link rel="stylesheet" href="https://bootswatch.com/_vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://bootswatch.com/_vendor/prismjs/themes/prism-okaidia.css">
-    <!-- open-iconic -->
-    <link href="<c:url value="/static/css/open-iconic-bootstrap.css" />" rel="stylesheet">
-
     <!-- Altri CSS -->
     <link href="<c:url value="/static/css/main.css" />" rel="stylesheet">
     <link rel="stylesheet" href="">
@@ -34,18 +31,19 @@
                     <a class="nav-link" href="<spring:url value="cars"/>">Parco Auto</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="reservations_list">Account</a>
+                    <a class="nav-link" href="reservations">Account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="users_list">Admin</a>
+                    <a class="nav-link" href="users">Admin</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
+<br><br>
 <tiles:insertAttribute name="content"/>
-
+<br><br>
 <tiles:insertAttribute name="footer"/>
 
 <!-- Javascritp con JQuery, Popper, BootstrapJS -->

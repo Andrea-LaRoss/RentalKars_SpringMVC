@@ -14,12 +14,9 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private Transaction tx;
-
-
     @Override
     public void saveUser(User user) {
-        tx = null;
+        Transaction tx = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
             tx = session.beginTransaction();
@@ -38,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void updateUser(User user) {
-        tx = null;
+        Transaction tx = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
             tx = session.beginTransaction();
@@ -57,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void removeUser(User user) {
-        tx = null;
+        Transaction tx = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
             tx = session.beginTransaction();
@@ -76,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User selById(Long id) {
-        tx = null;
+        Transaction tx = null;
         User user = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
@@ -97,7 +94,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User validateUser(String email, String password) {
-        tx = null;
+        Transaction tx = null;
         User user = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
@@ -124,7 +121,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> searchByEmail(String email) {
-        tx = null;
+        Transaction tx = null;
         List<User> users = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
@@ -150,7 +147,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> selByFirstName(String firstName) {
-        tx = null;
+        Transaction tx = null;
         List<User> users = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
@@ -176,7 +173,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> selByLastName(String lastName) {
-        tx = null;
+        Transaction tx = null;
         List<User> users = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 

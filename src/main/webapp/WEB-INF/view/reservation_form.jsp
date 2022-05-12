@@ -30,4 +30,26 @@
         </div>
     </form:form>
 
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Marca</th>
+                <th scope="col">Modello</th>
+                <th scope="col">Targa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="car" items="${cars}">
+                <tr class="table-secondary">
+                    <td>${car.manufacturer}</td>
+                    <td>${car.model}</td>
+                    <td>${car.numPlate}</td>
+                    <td><a class="btn btn-outline-warning" href="/confirm/${car.id}">Prenota</a></td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
 </div>

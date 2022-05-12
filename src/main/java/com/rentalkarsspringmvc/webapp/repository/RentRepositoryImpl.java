@@ -27,7 +27,7 @@ public class RentRepositoryImpl implements RentRepository{
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
             tx = session.beginTransaction();
-            session.save(rent);
+            session.saveOrUpdate(rent);
             tx.commit();
 
         } catch (Exception e) {

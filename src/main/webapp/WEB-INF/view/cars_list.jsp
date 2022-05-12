@@ -29,7 +29,7 @@
                 <td>${car.regDate}</td>
                 <td>
 
-                        <a class="btn btn-outline-primary" href="<spring:url value="/cars/form/${car.id}" />">Modifica</a>
+                        <a class="btn btn-outline-primary" href="<spring:url value="/cars/update/${car.id}" />">Modifica</a>
                         <a class="btn btn-outline-danger" href="<spring:url value="/cars/remove/${car.id}" />" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
 
                 </td>

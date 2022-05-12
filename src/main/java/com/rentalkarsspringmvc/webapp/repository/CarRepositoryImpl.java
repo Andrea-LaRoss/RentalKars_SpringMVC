@@ -23,7 +23,7 @@ public class CarRepositoryImpl implements CarRepository {
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
 
             tx = session.beginTransaction();
-            session.save(car);
+            session.saveOrUpdate(car);
             tx.commit();
 
         } catch (Exception e) {

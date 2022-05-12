@@ -55,7 +55,7 @@ public class RentController {
     }
 
 
-    @GetMapping("/save/{id}")
+    @PostMapping("/save/{id}")
     public String addReservation(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
         if(result.hasErrors()) {
@@ -70,6 +70,7 @@ public class RentController {
 
         return "redirect:/reservations";
     }
+
 
 
     @GetMapping("/approve/{id}")

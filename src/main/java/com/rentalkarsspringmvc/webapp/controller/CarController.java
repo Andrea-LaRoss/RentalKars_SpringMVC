@@ -59,27 +59,21 @@ public class CarController {
     }
 
 
-    @GetMapping ("/form/{id}")
-    public String updateCarForm(@ModelAttribute("carForm") Car carForm, @PathVariable("id") String id, Model model) {
+    @GetMapping ("/update/{id}")
+    public String updateCarForm(@PathVariable("id") String id, Model model) {
 
         Car car = carService.selById(Long.valueOf(id));
 
-        carForm.setManufacturer(car.getManufacturer());
-        carForm.setModel(car.getModel());
-        carForm.setType(car.getType());
-        carForm.setNumPlate(car.getNumPlate());
-        carForm.setRegDate(String.valueOf(car.getRegDate()));
-
         model.addAttribute("Titolo", "Modifica auto");
-        model.addAttribute("carForm", carForm);
+        model.addAttribute("carForm", car);
 
         return "car_form";
 
     }
 
 
-    @PostMapping("/form/update")
-    public String updateCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, Model model) {
+    @PostMapping("/update/{id}")
+    public String updateCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
        /* if(carService.selByPlate(numPlate) != null) {
             model.addAttribute("errorMsg", "Errore. Targa già registrata");
@@ -90,7 +84,14 @@ public class CarController {
             return "car_form";
         }
 
-        carService.updateCar(carForm);
+        Car car = carService.selById(Long.valueOf(id));
+        car.setManufacturer(carForm.getManufacturer());
+        car.setModel(carForm.getModel());
+        car.setType(carForm.getType());
+        car.setNumPlate(carForm.getNumPlate());
+        car.setNumPlate(carForm.getNumPlate());
+
+        carService.updateCar(car);
 
         return "redirect:/cars";
 

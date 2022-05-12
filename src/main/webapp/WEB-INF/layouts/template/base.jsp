@@ -20,7 +20,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index">Navbar</a>
+        <a class="navbar-brand" href="<spring:url value="/index/"/>">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,13 +28,13 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="<spring:url value="cars"/>">Parco Auto</a>
+                    <a class="nav-link" href="<spring:url value="/cars/"/>">Parco Auto</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="reservations">Account</a>
+                    <a class="nav-link" href="<spring:url value="/reservations/"/>">Account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="users">Admin</a>
+                    <a class="nav-link" href="<spring:url value="/users/"/>">Admin</a>
                 </li>
             </ul>
         </div>

@@ -3,6 +3,8 @@ package com.rentalkarsspringmvc.webapp.controller;
 import com.rentalkarsspringmvc.webapp.entities.User;
 import com.rentalkarsspringmvc.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,7 +27,7 @@ public class UserController {
 
     @InitBinder
     public void initialiseBinder(WebDataBinder binder){
-        //Riempire il metodo per la data
+
     }
 
 
@@ -48,32 +53,31 @@ public class UserController {
     }
 
 
-    @GetMapping("/form/{id}")
-    public String updateUserForm(@ModelAttribute("userForm") User userForm, @PathVariable("id") String id, Model model) {
+    @GetMapping("/update/{id}")
+    public String updateUserForm(@PathVariable("id") String id, Model model) {
 
         User user = userService.selById(Long.valueOf(id));
 
-        userForm.setEmail(user.getEmail());
-        userForm.setPassword(user.getPassword());
-        userForm.setFirstName(user.getFirstName());
-        userForm.setLastName(user.getLastName());
-        userForm.setBirthday(String.valueOf(user.getBirthday()));
-
         model.addAttribute("Titolo", "Modifica utente");
-        model.addAttribute("userForm", userForm);
+        model.addAttribute("userForm", user);
 
         return "user_form";
     }
 
 
-    @PostMapping("/form")
-    public String updateUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, Model model) {
+    @PostMapping("/update/{id}")
+    public String updateUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
         if(result.hasErrors()) {
             return "user_form";
         }
 
-        userService.updateUser(userForm);
+        User user = userService.selById(Long.valueOf(id));
+        user.setFirstName(userForm.getFirstName());
+        user.setLastName(userForm.getLastName());
+        user.setPassword(userForm.getPassword());
+        user.setEmail(userForm.getEmail());
+        userService.updateUser(user);
 
         return "redirect:/users";
 
@@ -95,6 +99,30 @@ public class UserController {
     public String getAllUsers(Model model) {
 
         List<User> users = userService.getUsers();
+        model.addAttribute("usersList", users);
+
+        return "users_list";
+
+    }
+
+    @GetMapping("/search")
+    public String searchUserFirstName(@RequestParam("filter") String filter, @RequestParam("value") String value, Model model) {
+
+        List<User> users = new ArrayList<>();
+
+        switch(filter) {
+            case "firstName":
+                users = userService.selByFirstName(value);
+                break;
+
+            case "lastName":
+                users = userService.selByLastName(value);
+                break;
+
+            case "email":
+                users = userService.searchByEmail(value);
+        }
+
         model.addAttribute("usersList", users);
 
         return "users_list";

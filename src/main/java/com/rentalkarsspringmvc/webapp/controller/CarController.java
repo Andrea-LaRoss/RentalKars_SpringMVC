@@ -90,6 +90,7 @@ public class CarController {
         car.setType(carForm.getType());
         car.setNumPlate(carForm.getNumPlate());
         car.setNumPlate(carForm.getNumPlate());
+        car.setRegDate(carForm.getRegDate());
 
         carService.updateCar(car);
 

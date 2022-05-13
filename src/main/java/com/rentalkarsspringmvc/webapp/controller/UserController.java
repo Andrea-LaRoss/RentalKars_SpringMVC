@@ -49,7 +49,9 @@ public class UserController {
         }
 
         userService.saveUser(userForm);
+
         return "redirect:/users";
+
     }
 
 
@@ -77,6 +79,7 @@ public class UserController {
         user.setLastName(userForm.getLastName());
         user.setPassword(userForm.getPassword());
         user.setEmail(userForm.getEmail());
+        user.setBirthday(userForm.getBirthday());
         userService.updateUser(user);
 
         return "redirect:/users";

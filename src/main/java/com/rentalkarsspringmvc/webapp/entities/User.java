@@ -1,10 +1,14 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
+import org.hibernate.boot.model.naming.ImplicitAnyDiscriminatorColumnNameSource;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -38,6 +42,7 @@ public class User implements Serializable {
 
 
 //    @NotEmpty(message = "{NotEmpty.User.email.validation}")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "birthday")
     private LocalDate birthday;
 
@@ -100,12 +105,10 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
-    }
+    public LocalDate getBirthday() { return birthday; }
 
-    public void setBirthday(String birthday) {
-        this.birthday = LocalDate.parse(birthday);
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     public boolean isAdmin() {

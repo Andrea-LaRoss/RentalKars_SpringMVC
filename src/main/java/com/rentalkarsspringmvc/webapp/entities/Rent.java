@@ -1,5 +1,7 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -22,9 +24,11 @@ public class Rent implements Serializable {
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "start_date")
     private LocalDate startDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "end_date")
     private LocalDate endDate;
 

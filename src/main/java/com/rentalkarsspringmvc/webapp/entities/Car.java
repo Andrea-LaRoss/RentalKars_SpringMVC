@@ -1,5 +1,7 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PastOrPresent;
@@ -40,6 +42,7 @@ public class Car implements Serializable {
 
   //  @NotEmpty(message = "{NotEmpty.Car.regDate.validation}")
     //@PastOrPresent(message = "{PastOrPresent.Car.regDate.validation}")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "reg_date")
     private LocalDate regDate;
 
@@ -100,9 +103,7 @@ public class Car implements Serializable {
 
     public LocalDate getRegDate() { return regDate; }
 
-    public void setRegDate(String regDate) {
-        this.regDate = LocalDate.parse(regDate);
-    }
+    public void setRegDate(LocalDate regDate) { this.regDate = regDate; }
 
     public Set<Rent> getReservation() { return reservation; }
 

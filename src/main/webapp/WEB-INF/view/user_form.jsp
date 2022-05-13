@@ -34,10 +34,10 @@
                 <label for="lastName">Cognome</label>
             </div>
 
-         <!--   <div class="form-floating mb-4">
-                <input type="date" class="form-control" path="birthday"/>
+            <div class="form-floating mb-4">
+                <form:input type="date" class="form-control" path="birthday"/>
                 <label for="birthday">Data di nascita</label>
-            </div> -->
+            </div>
 
         </div>
 

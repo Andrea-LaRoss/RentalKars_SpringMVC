@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://bootswatch.com/_vendor/prismjs/themes/prism-okaidia.css">
     <!-- Altri CSS -->
     <link href="<c:url value="/static/css/main.css" />" rel="stylesheet">
-    <link rel="stylesheet" href="">
     <title><tiles:insertAttribute name="titolo" /></title>
 </head>
 <body>

@@ -2,7 +2,6 @@ package com.rentalkarsspringmvc.webapp.controller;
 
 import com.rentalkarsspringmvc.webapp.entities.Car;
 import com.rentalkarsspringmvc.webapp.entities.Rent;
-import com.rentalkarsspringmvc.webapp.entities.User;
 import com.rentalkarsspringmvc.webapp.service.CarService;
 import com.rentalkarsspringmvc.webapp.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +44,12 @@ public class RentController {
 
 
     @PostMapping("/add")
-    public void getAvailableCars(@ModelAttribute ("rentForm") Rent rentForm, Model model) {
+    public String getAvailableCars(@ModelAttribute ("rentForm") Rent rentForm, Model model) {
 
         List<Car> cars = rentService.availableCars(rentForm.getStartDate(), rentForm.getEndDate());
         model.addAttribute("cars", cars);
 
+        return "reservation_form";
     }
 
 

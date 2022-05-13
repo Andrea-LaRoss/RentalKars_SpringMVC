@@ -39,18 +39,13 @@ public class Rent implements Serializable {
 
     }
 
-    public Rent(LocalDate startDate, LocalDate endDate, Car car, User user, String status){
+
+    public Rent(LocalDate startDate, LocalDate endDate, Car car, User user){
         this.startDate = startDate;
         this.endDate = endDate;
         this.car = car;
         this.user = user;
-        this.status = status;
-    }
-
-
-    public Rent(LocalDate startDate, LocalDate endDate){
-        this.startDate = startDate;
-        this.endDate = endDate;
+        status = "In Attesa";
     }
 
 
@@ -82,17 +77,13 @@ public class Rent implements Serializable {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = LocalDate.parse(startDate);
-    }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = LocalDate.parse(endDate);
-    }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
     public String getStatus() { return status; }
 

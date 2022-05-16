@@ -5,6 +5,7 @@ import com.rentalkarsspringmvc.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,11 +25,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    @InitBinder
-    public void initialiseBinder(WebDataBinder binder){
-
-    }
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 
     @GetMapping("/add")
@@ -77,7 +75,7 @@ public class UserController {
         User user = userService.selById(Long.valueOf(id));
         user.setFirstName(userForm.getFirstName());
         user.setLastName(userForm.getLastName());
-        user.setPassword(userForm.getPassword());
+        user.setPassword(passwordEncoder.encode(userForm.getPassword()));
         user.setEmail(userForm.getEmail());
         user.setBirthday(userForm.getBirthday());
         userService.updateUser(user);

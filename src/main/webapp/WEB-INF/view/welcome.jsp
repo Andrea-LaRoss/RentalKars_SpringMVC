@@ -7,8 +7,7 @@
             <div class="col-lg-12">
                 <h1>${intestazione}</h1>
                 <p>${saluti}</p>
-                <a href="#" id="SignIn" class="btn btn-primary btn-lg">Accedi</a>
-                <a href="#" id="SignUp" class="btn btn-success btn-lg">Registrati</a>
+                <a  id="SignIn" class="btn btn-primary btn-lg">Accedi</a>
             </div>
         </div>
     </div>

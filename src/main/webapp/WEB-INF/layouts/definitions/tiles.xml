@@ -53,7 +53,7 @@
 
     <definition name="login" extends="baseLogin">
         <put-attribute name="titolo" value="Accedi al sito"/>
-        <put-attribute name="content" value="/WEB-INF/layouts/view/login.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/view/login.jsp"/>
     </definition>
 
 </tiles-definitions>

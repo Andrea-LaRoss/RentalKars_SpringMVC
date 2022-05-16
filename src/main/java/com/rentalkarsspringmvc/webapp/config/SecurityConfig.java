@@ -1,4 +1,4 @@
-/*package com.rentalkarsspringmvc.webapp.config;
+package com.rentalkarsspringmvc.webapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Utente1
         manager.createUser(
                 users
-                        .username("")
+                        .username("Admin")
                         .password(new BCryptPasswordEncoder().encode("1234"))
                         .roles("USER", "ADMIN")
                         .build());
@@ -76,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/login/**").permitAll()
-               // .antMatchers("/").hasAnyRole("ANONYMOUS", "USER")
+                .antMatchers("/").hasAnyRole("ANONYMOUS", "USER")
                 .antMatchers(ADMIN_URL_MATCHER).access("hasRole('ADMIN')")
                 .antMatchers("/users/update/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/reservations/**").hasRole("USER")
@@ -97,4 +97,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
-*/

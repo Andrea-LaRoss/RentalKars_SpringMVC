@@ -9,7 +9,8 @@
 
 <div class="container">
 
-    <form:form method="GET" modelAttribute="rentForm" action="${pageContext.request.contextPath}/reservations/check">
+    <form:form method="POST" modelAttribute="rentForm">
+        <form:errors path="*" cssClass="alert alert-danger" element="div"/>
         <div class="form-group">
 
             <div class="form-floating mb-4">
@@ -46,7 +47,7 @@
                         <td>${car.model}</td>
                         <td>${car.numPlate}</td>
                         <td>
-                            <a class="btn btn-outline-primary" href="<spring:url value="/reservations/confirm/${car.id}"/>">Modifica</a>
+                            <a class="btn btn-outline-warning" href="<spring:url value="/reservations/confirm/${car.id}"/>">Prenota</a>
                         </td>
                     </tr>
                 </c:forEach>

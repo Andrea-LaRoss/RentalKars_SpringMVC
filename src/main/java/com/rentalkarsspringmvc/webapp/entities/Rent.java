@@ -1,9 +1,10 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
-import org.springframework.cglib.core.Local;
+import com.rentalkarsspringmvc.webapp.validator.Before2Days;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,10 +26,13 @@ public class Rent implements Serializable {
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 
+    @Before2Days
+    @NotNull(message = "{NotNull.Rent.startDate.validation}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "start_date")
     private LocalDate startDate;
 
+    @NotNull(message = "{NotNull.Rent.endDate.validation}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "end_date")
     private LocalDate endDate;

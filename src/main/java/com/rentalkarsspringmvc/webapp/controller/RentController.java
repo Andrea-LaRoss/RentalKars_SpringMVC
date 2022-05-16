@@ -52,12 +52,13 @@ public class RentController {
     }
 
 
-    @GetMapping("/check")
+    @PostMapping ("/add")
     public String checkCars(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, Model model) {
 
         if(result.hasErrors()) {
             return "reservation_form";
         }
+
         rent = new Rent();
         List<Car> cars = rentService.availableCars(rentForm.getStartDate(), rentForm.getEndDate());
         rent.setStartDate(rentForm.getStartDate());
@@ -96,8 +97,8 @@ public class RentController {
     }
 
 
-    @GetMapping("/update/{id}")
-    public String updateReservation(@ModelAttribute("rentForm") Rent rentForm, BindingResult result, @PathVariable("id") String id, Model model) {
+    @PostMapping("/update/{id}")
+    public String updateReservation(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
         if(result.hasErrors()) {
             return "reservation_form";
@@ -106,6 +107,7 @@ public class RentController {
         Rent rent = rentService.selById(Long.valueOf(id));
         rent.setStartDate(rentForm.getStartDate());
         rent.setEndDate(rentForm.getEndDate());
+        rent.setStatus("In attesa");
         rentService.updateReservation(rent);
 
         return "redirect:/reservations";
@@ -114,9 +116,9 @@ public class RentController {
 
 
     @GetMapping("/approve/{id}")
-    public String approveReservation(@PathVariable("id") String id, Model model) {
+    public String approveReservation(@PathVariable("id") Long id, Model model) {
 
-        Rent rent = rentService.selById(Long.valueOf(id));
+        Rent rent = rentService.selById(id);
         rent.setStatus("Approvata");
         rentService.updateReservation(rent);
 

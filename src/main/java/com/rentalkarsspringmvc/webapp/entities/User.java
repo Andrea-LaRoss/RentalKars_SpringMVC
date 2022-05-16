@@ -1,14 +1,15 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
-import org.hibernate.boot.model.naming.ImplicitAnyDiscriminatorColumnNameSource;
+import com.rentalkarsspringmvc.webapp.validator.NotMinor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,7 @@ public class User implements Serializable {
     private long id;
 
 
-    @NotEmpty(message = "{NotEmpty.User.email.validation}")
+    @Email(message = "{NotEmpty.User.email.validation}")
     @Column(name = "email", nullable = false, length = 128, unique = true)
     private String email;
 
@@ -41,7 +42,8 @@ public class User implements Serializable {
     private String lastName;
 
 
-//    @NotEmpty(message = "{NotEmpty.User.email.validation}")
+    @NotMinor
+    @NotNull(message = "{NotNull.User.birthday.validation}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "birthday")
     private LocalDate birthday;

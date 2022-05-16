@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
 import java.io.Serializable;
@@ -40,8 +41,8 @@ public class Car implements Serializable {
     private String numPlate;
 
 
-  //  @NotEmpty(message = "{NotEmpty.Car.regDate.validation}")
-    //@PastOrPresent(message = "{PastOrPresent.Car.regDate.validation}")
+    @NotNull(message = "{NotNull.Car.regDate.validation}")
+    @PastOrPresent(message = "{PastOrPresent.Car.regDate.validation}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "reg_date")
     private LocalDate regDate;

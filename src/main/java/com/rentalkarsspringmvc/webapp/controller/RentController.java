@@ -23,6 +23,8 @@ import java.util.List;
 @RequestMapping("/reservations")
 public class RentController {
 
+    private Rent rent;
+
     @Autowired
     private RentService rentService;
 
@@ -51,31 +53,31 @@ public class RentController {
 
 
     @GetMapping("/check")
-    public String checkCars(@ModelAttribute("rentForm") Rent rentForm, BindingResult result, Model model) {
+    public String checkCars(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, Model model) {
+
+        if(result.hasErrors()) {
+            return "reservation_form";
+        }
+        rent = new Rent();
         List<Car> cars = rentService.availableCars(rentForm.getStartDate(), rentForm.getEndDate());
-        model.addAttribute("startDate", rentForm.getStartDate());
-        model.addAttribute("endDate", rentForm.getEndDate());
+        rent.setStartDate(rentForm.getStartDate());
+        rent.setEndDate(rentForm.getEndDate());
+        model.addAttribute("rentForm", rentForm);
         model.addAttribute("cars", cars);
 
         return "reservation_form";
     }
 
 
-    @GetMapping("/confirm")
-    public String addReservation(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, Model model) {
+    @GetMapping("/confirm/{carId}")
+    public String addReservation(@PathVariable("carId") String id, Model model) {
 
-        String redirect = "";
-
-        if(result.hasErrors()) {
-            return "reservation_form";
-        }
-
-            //Car car = carService.selById(Long.valueOf(id));
+            Car car = carService.selById(Long.valueOf(id));
             //User user = Prendi l'user dalla sessione
 
-            //rentForm.setCar(car);
-            rentForm.setUser(userService.selById(1l));
-            rentService.saveRent(rentForm);
+            rent.setCar(car);
+            rent.setUser(userService.selById(1l));
+            rentService.saveRent(rent);
 
         return "redirect:/reservations";
 
@@ -94,7 +96,7 @@ public class RentController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("/update/{id}")
     public String updateReservation(@ModelAttribute("rentForm") Rent rentForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
         if(result.hasErrors()) {

@@ -9,7 +9,7 @@
 
 <div class="container">
 
-    <form:form method="GET" modelAttribute="rentForm" action="${pageContext.request.contextPath}/reservations/confirm">
+    <form:form method="GET" modelAttribute="rentForm" action="${pageContext.request.contextPath}/reservations/check">
         <div class="form-group">
 
             <div class="form-floating mb-4">
@@ -25,10 +25,9 @@
         </div>
 
         <div class="d-grid gap-2">
-            <a class="btn btn-lg btn-primary" href="<spring:url value="/reservations/check"/>"></a>
             <input class="btn btn-primary" type="submit" value="Cerca auto">
         </div>
-
+    </form:form>
         <br>
 
         <div class="container">
@@ -47,13 +46,12 @@
                         <td>${car.model}</td>
                         <td>${car.numPlate}</td>
                         <td>
-                            <form:input type="hidden" path="car"/>
-                            <input class="btn btn-outline-warning" type="submit" value="Prenota">
+                            <a class="btn btn-outline-primary" href="<spring:url value="/reservations/confirm/${car.id}"/>">Modifica</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
-    </form:form>
+
 </div>

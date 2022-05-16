@@ -1,5 +1,6 @@
 package com.rentalkarsspringmvc.webapp.entities;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -36,9 +37,14 @@ public class Rent implements Serializable {
     private String status;
 
     public Rent(){
-
+        status = "In Attesa";
     }
 
+    public Rent(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        status = "In Attesa";
+    }
 
     public Rent(LocalDate startDate, LocalDate endDate, Car car, User user){
         this.startDate = startDate;

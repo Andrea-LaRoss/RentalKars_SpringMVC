@@ -32,9 +32,7 @@
                 <td>${rent.status}</td>
                 <td></td>
                 <td>
-                    <c:if test="${loggedUser.admin eq false}">
-                        <a class="btn btn-outline-primary" href="<spring:url value="/reservations/update/${rent.id}"/>">Modifica</a>
-                    </c:if>
+                    <a class="btn btn-outline-primary" href="<spring:url value="/reservations/update/${rent.id}"/>">Modifica</a>
                     <a class="btn btn-outline-danger" href="<spring:url value="/reservations/remove/${rent.id}"/>" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
                     <c:if test="${rent.status == 'In Attesa'}">
                             <a class="btn btn-outline-success" href="<spring:url value="/reservations/approve/${rent.id}"/>">Approva</a>

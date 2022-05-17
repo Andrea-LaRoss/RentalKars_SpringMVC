@@ -14,7 +14,7 @@ public interface UserService {
 
     User selById(Long id);
 
-    User validateUser(String email, String password);
+    User validateUser(String email);
 
     List<User> searchByEmail(String email);
 

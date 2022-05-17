@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="container">
     <h2>${titolo}</h2>
@@ -42,10 +43,10 @@
         </c:forEach>
         </tbody>
     </table>
-
-        <div class="d-grid gap-2">
-            <a class="btn btn-primary" href="<spring:url value="/reservations/add"/>"><strong>Nuova prenotazione</strong></a>
-        </div>
-
+        <sec:authorize access="hasRole('USER')">
+            <div class="d-grid gap-2">
+                <a class="btn btn-primary" href="<spring:url value="/reservations/add"/>"><strong>Nuova prenotazione</strong></a>
+            </div>
+        </sec:authorize>
 </div>
 

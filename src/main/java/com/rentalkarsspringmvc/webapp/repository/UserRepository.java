@@ -14,7 +14,7 @@ public interface UserRepository {
 
     public User selById(Long id);
 
-    public User validateUser(String email, String password);
+    public User validateUser(String email);
 
     public List<User> searchByEmail(String email);
 

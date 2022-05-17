@@ -1,25 +1,41 @@
 package com.rentalkarsspringmvc.webapp.config;
 
+import com.rentalkarsspringmvc.webapp.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
+
+import javax.servlet.annotation.WebServlet;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    @Autowired
+    @Qualifier("customUserDetailsService")
+    private UserDetailsService userDetailsService;
 
-        return new BCryptPasswordEncoder();
-    }
+    //@Autowired
+    //DataSource dataSource;//DBMS cambiare con hibernate
+
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+
 
     @Bean
     @Override
@@ -49,14 +65,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
-    public void configure(final AuthenticationManagerBuilder auth) throws Exception {
 
-        auth
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+    @Override
+    public void configure(final AuthenticationManagerBuilder auth) throws Exception { auth.authenticationProvider(authenticationProvider()); }
+
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+
+        return authenticationProvider;
 
     }
+
 
     public static final String[] ADMIN_URL_MATCHER = {
             "/cars/add/**",
@@ -65,9 +90,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             "/users/add/**",
             "/users/remove/**",
+            "/users/**",
 
             "/reservations/approve/**"
     };
+
 
     @Override
     public void configure(final HttpSecurity http) throws Exception {

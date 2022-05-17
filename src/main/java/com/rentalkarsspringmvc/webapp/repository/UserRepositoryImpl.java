@@ -93,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public User validateUser(String email, String password) {
+    public User validateUser(String email) {
         Transaction tx = null;
         User user = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
@@ -105,8 +105,7 @@ public class UserRepositoryImpl implements UserRepository {
             Root<User> userSet = query.from(User.class);
             CriteriaQuery<User> select = query.select(userSet);
 
-            user = session.createQuery(select.where(builder.and(builder.equal(userSet.get("email"), email),
-                    builder.equal(userSet.get("password"), password)))).getSingleResult();
+            user = session.createQuery(select.where(builder.equal(userSet.get("email"), email))).getSingleResult();
 
             tx.commit();
         } catch (Exception e) {

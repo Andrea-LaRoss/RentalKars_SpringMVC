@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
     public User selById(Long id) { return userRepository.selById(id); }
 
     @Override
-    public User validateUser(String email, String password) { return userRepository.validateUser(email, password); }
+    public User validateUser(String email) { return userRepository.validateUser(email); }
 
     @Override
     public List<User> searchByEmail(String email) { return userRepository.searchByEmail(email); }

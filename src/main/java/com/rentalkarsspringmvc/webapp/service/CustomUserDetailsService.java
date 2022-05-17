@@ -1,15 +1,15 @@
 package com.rentalkarsspringmvc.webapp.service;
 
 import com.rentalkarsspringmvc.webapp.entities.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("CustomUserDetailsService")
+@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Inserisci la mail");
         }
 
-        User user = userService.validateUser(email, "1234");
+        User user = userService.validateUser(email);
 
         if(user == null) {
             throw new UsernameNotFoundException("Utente non trovato");
@@ -31,13 +31,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         UserBuilder builder = null;
 
-        builder = User.withUsername(user.getEmail());
+        builder = org.springframework.security.core.userdetails.User.withUsername(user.getEmail());
         builder.password(user.getPassword());
 
-        String[] profili =
-
-        builder.authorities(profili);
+        if(user.isAdmin()) {
+            builder.roles("ADMIN");
+        } else {
+            builder.roles("USER");
+        }
 
         return builder.build();
+
     }
 }

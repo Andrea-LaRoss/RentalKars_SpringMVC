@@ -1,20 +1,16 @@
 package com.rentalkarsspringmvc.webapp.controller;
 
+import com.rentalkarsspringmvc.webapp.config.SpringSecurityUserContext;
 import com.rentalkarsspringmvc.webapp.entities.User;
 import com.rentalkarsspringmvc.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +30,7 @@ public class UserController {
 
         model.addAttribute("userForm", userForm);
         model.addAttribute("Titolo", "Aggiungi utente");
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "user_form";
 
@@ -43,10 +40,17 @@ public class UserController {
     public String saveUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, Model model) {
 
         if(result.hasErrors()) {
+            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "user_form";
         }
 
-        userService.saveUser(userForm);
+        User user = new User();
+        user.setFirstName(userForm.getFirstName());
+        user.setLastName(userForm.getLastName());
+        user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        user.setEmail(userForm.getEmail());
+        user.setBirthday(userForm.getBirthday());
+        userService.saveUser(user);
 
         return "redirect:/users";
 
@@ -60,6 +64,7 @@ public class UserController {
 
         model.addAttribute("Titolo", "Modifica utente");
         model.addAttribute("userForm", user);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "user_form";
     }
@@ -69,6 +74,7 @@ public class UserController {
     public String updateUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
         if(result.hasErrors()) {
+            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "user_form";
         }
 
@@ -101,6 +107,7 @@ public class UserController {
 
         List<User> users = userService.getUsers();
         model.addAttribute("usersList", users);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "users_list";
 
@@ -125,6 +132,7 @@ public class UserController {
         }
 
         model.addAttribute("usersList", users);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "users_list";
 

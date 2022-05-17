@@ -1,16 +1,15 @@
 package com.rentalkarsspringmvc.webapp.controller;
 
+import com.rentalkarsspringmvc.webapp.config.SpringSecurityUserContext;
 import com.rentalkarsspringmvc.webapp.entities.Car;
 import com.rentalkarsspringmvc.webapp.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -21,17 +20,13 @@ public class CarController {
     private CarService carService;
 
 
-    @InitBinder
-    public void initialiseBinder(WebDataBinder binder){
-        //Riempire il metodo per la data
-    }
-
 
     @GetMapping("/add")
     public String saveCarForm(@ModelAttribute("carForm") Car carForm, Model model) {
 
         model.addAttribute("carForm", carForm);
         model.addAttribute("Titolo", "Aggiungi auto");
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "car_form";
 
@@ -42,16 +37,9 @@ public class CarController {
     public String saveCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, Model model) {
 
         if(result.hasErrors()) {
+            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "car_form";
         }
-
-       /* Aggiungere dopo che mi rendo conto di come gestire l'eccezione
-       if(carService.selByPlate(carForm.getNumPlate()) != null) {
-            model.addAttribute("errorMsg", "Errore. Targa già registrata");
-            model.addAttribute("carForm", carForm);
-            return "car_form";
-
-        }*/
 
         carService.saveCar(carForm);
         return "redirect:/cars";
@@ -66,6 +54,7 @@ public class CarController {
 
         model.addAttribute("Titolo", "Modifica auto");
         model.addAttribute("carForm", car);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "car_form";
 
@@ -75,12 +64,8 @@ public class CarController {
     @PostMapping("/update/{id}")
     public String updateCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, @PathVariable("id") String id, Model model) {
 
-       /* if(carService.selByPlate(numPlate) != null) {
-            model.addAttribute("errorMsg", "Errore. Targa già registrata");
-            return listCars(model);
-        }*/
-
         if(result.hasErrors()) {
+            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "car_form";
         }
 
@@ -117,6 +102,7 @@ public class CarController {
 
         model.addAttribute("Titolo", "Listino Auto");
         model.addAttribute("carsList", cars);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "cars_list";
 

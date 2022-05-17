@@ -1,5 +1,6 @@
 package com.rentalkarsspringmvc.webapp.controller;
 
+import com.rentalkarsspringmvc.webapp.config.SpringSecurityUserContext;
 import com.rentalkarsspringmvc.webapp.entities.Car;
 import com.rentalkarsspringmvc.webapp.entities.Rent;
 import com.rentalkarsspringmvc.webapp.entities.User;
@@ -7,15 +8,13 @@ import com.rentalkarsspringmvc.webapp.service.CarService;
 import com.rentalkarsspringmvc.webapp.service.RentService;
 import com.rentalkarsspringmvc.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,17 +34,12 @@ public class RentController {
     private UserService userService;
 
 
-    @InitBinder
-    public void initialiseBinder(WebDataBinder binder){
-        //Riempire il metodo per la data
-    }
-
-
     @GetMapping("/add")
     public String addReservationForm(@ModelAttribute ("rentForm") Rent rentForm, Model model) {
 
         model.addAttribute(rentForm);
         model.addAttribute("Titolo", "Aggiungi prenotazione");
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "reservation_form";
 
@@ -56,6 +50,7 @@ public class RentController {
     public String checkCars(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, Model model) {
 
         if(result.hasErrors()) {
+            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "reservation_form";
         }
 
@@ -65,19 +60,20 @@ public class RentController {
         rent.setEndDate(rentForm.getEndDate());
         model.addAttribute("rentForm", rentForm);
         model.addAttribute("cars", cars);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "reservation_form";
     }
 
 
     @GetMapping("/confirm/{carId}")
-    public String addReservation(@PathVariable("carId") String id, Model model) {
+    public String addReservation(@PathVariable("carId") Long id, Model model) {
 
-            Car car = carService.selById(Long.valueOf(id));
-            //User user = Prendi l'user dalla sessione
+            Car car = carService.selById(id);
+            User user = userService.validateUser(new SpringSecurityUserContext().getCurrentUser());
 
             rent.setCar(car);
-            rent.setUser(userService.selById(1l));
+            rent.setUser(user);
             rentService.saveRent(rent);
 
         return "redirect:/reservations";
@@ -86,25 +82,27 @@ public class RentController {
 
 
     @GetMapping("/update/{id}")
-    public String updateReservationForm(@PathVariable("id") String id, Model model) {
+    public String updateReservationForm(@PathVariable("id") Long id, Model model) {
 
-        Rent rent = rentService.selById(Long.valueOf(id));
+        Rent rent = rentService.selById(id);
 
         model.addAttribute("Titolo", "Modifica prenotazione");
         model.addAttribute("rentForm", rent);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "reservation_form";
     }
 
 
     @PostMapping("/update/{id}")
-    public String updateReservation(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, @PathVariable("id") String id, Model model) {
+    public String updateReservation(@Valid @ModelAttribute("rentForm") Rent rentForm, BindingResult result, @PathVariable("id") Long id, Model model) {
 
         if(result.hasErrors()) {
+            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "reservation_form";
         }
 
-        Rent rent = rentService.selById(Long.valueOf(id));
+        Rent rent = rentService.selById(id);
         rent.setStartDate(rentForm.getStartDate());
         rent.setEndDate(rentForm.getEndDate());
         rent.setStatus("In attesa");
@@ -121,6 +119,7 @@ public class RentController {
         Rent rent = rentService.selById(id);
         rent.setStatus("Approvata");
         rentService.updateReservation(rent);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "redirect:/reservations";
 
@@ -132,13 +131,19 @@ public class RentController {
 
         List<Rent> reservations = new ArrayList<>();
 
-        //if loggedUser is admin
-        //reservations = rentService.listUserReservation(loggedUser);
-        //else
-        reservations = rentService.getRents();
+        User user = userService.validateUser(new SpringSecurityUserContext().getCurrentUser());
+
+        if(user.isAdmin()) {
+            reservations = rentService.getRents();
+        }
+        else {
+            reservations = rentService.listUserReservation(user);
+        }
+
 
         model.addAttribute("Titolo", "Lista Prenotazioni");
         model.addAttribute("reservations", reservations);
+        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "reservations_list";
 

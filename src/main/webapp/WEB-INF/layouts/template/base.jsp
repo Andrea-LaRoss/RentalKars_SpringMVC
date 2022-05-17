@@ -32,15 +32,15 @@
                     <a class="nav-link" href="<spring:url value="/cars/"/>">Parco Auto</a>
                 </li>
 
-                <sec:authorize access="hasRole('USER')">
+                <sec:authorize access="hasAnyRole('USER', 'ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="<spring:url value="/reservations/"/>">Account</a>
+                    <a class="nav-link" href="<spring:url value="/reservations/"/>">Prenotazioni</a>
                 </li>
                 </sec:authorize>
 
                 <sec:authorize access="hasRole('ADMIN')">
                     <li class="nav-item">
-                        <a class="nav-link" href="<spring:url value="/users/"/>">Admin</a>
+                        <a class="nav-link" href="<spring:url value="/users/"/>">Lista Utenti</a>
                     </li>
                 </sec:authorize>
 

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "rent")
@@ -98,5 +99,18 @@ public class Rent implements Serializable {
     public String getStatus() { return status; }
 
     public void setStatus(String status) { this.status = status; }
+
+    public boolean dueDate() {
+        boolean valid = false;
+
+        Period timeDiff = LocalDate.now().until(this.startDate);
+
+        if (timeDiff.getYears() == 0 && timeDiff.getMonths() == 0 && timeDiff.getDays() < 2) {
+            valid = true;
+        }
+
+        return valid;
+
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.rentalkarsspringmvc.webapp.config;
 
-import com.rentalkarsspringmvc.webapp.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -8,18 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.annotation.WebServlet;
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -29,41 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("customUserDetailsService")
     private UserDetailsService userDetailsService;
 
-    //@Autowired
-    //DataSource dataSource;//DBMS cambiare con hibernate
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
-
-
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-
-        User.UserBuilder users = User.builder();
-
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-
-        //Utente1
-        manager.createUser(
-                users
-                        .username("Admin")
-                        .password(new BCryptPasswordEncoder().encode("1234"))
-                        .roles("USER", "ADMIN")
-                        .build());
-
-        //Utente 2
-        manager.createUser(
-                users
-                        .username("Cliente")
-                        .password(new BCryptPasswordEncoder().encode("1234"))
-                        .roles("USER")
-                        .build());
-
-        return manager;
-
-    }
 
 
     @Override
@@ -103,11 +66,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/login/**").permitAll()
-                .antMatchers("/").hasAnyRole("ANONYMOUS", "USER")
+                .antMatchers("/").hasAnyRole("ANONYMOUS", "USER", "ADMIN")
                 .antMatchers(ADMIN_URL_MATCHER).access("hasRole('ADMIN')")
                 .antMatchers("/users/update/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/reservations/**").hasRole("USER")
                 .and()
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .formLogin()
                         .loginPage("/login/form")
                         .loginProcessingUrl("/login")
@@ -121,6 +85,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     .logoutUrl("/login/form?logout");
 
+    }
+
+
+    public AuthenticationFilter authenticationFilter() throws Exception {
+
+        AuthenticationFilter filter = new AuthenticationFilter();
+
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationFailureHandler(failureHandler());
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+
+        return filter;
+
+    }
+
+
+    public SimpleUrlAuthenticationFailureHandler failureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/login/form?error");
+    }
+
+    @Bean
+    public SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler auth = new SavedRequestAwareAuthenticationSuccessHandler();
+        auth.setTargetUrlParameter("targetUrl");
+
+        return auth;
     }
 
 }

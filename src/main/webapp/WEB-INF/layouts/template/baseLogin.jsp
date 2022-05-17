@@ -16,8 +16,8 @@
     </head>
 
     <body>
-
-
+        <br><br>
         <tiles:insertAttribute name="content"/>
+        <br><br>
     </body>
 </html>

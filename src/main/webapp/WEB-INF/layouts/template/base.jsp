@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="it">
@@ -26,15 +27,33 @@
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
+
                 <li class="nav-item">
                     <a class="nav-link" href="<spring:url value="/cars/"/>">Parco Auto</a>
                 </li>
+
+                <sec:authorize access="hasRole('USER')">
                 <li class="nav-item">
                     <a class="nav-link" href="<spring:url value="/reservations/"/>">Account</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<spring:url value="/users/"/>">Admin</a>
-                </li>
+                </sec:authorize>
+
+                <sec:authorize access="hasRole('ADMIN')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<spring:url value="/users/"/>">Admin</a>
+                    </li>
+                </sec:authorize>
+
+                <sec:authorize access="isAuthenticated()">
+                    <form action="/RentalKars_SpringMVC_war_exploded/login/form?logout" method="POST" style="display: none" id="myHiddenFormId">
+                        <input type="hidden" name="logout" value="${User}">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    </form>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="$('#myHiddenFormId').submit(); return false;" title="Logout">Logout ${User}</a>
+                    </li>
+                </sec:authorize>
+
             </ul>
         </div>
     </div>
@@ -43,7 +62,6 @@
 <br><br>
 <tiles:insertAttribute name="content"/>
 <br><br>
-<tiles:insertAttribute name="footer"/>
 
 <!-- Javascritp con JQuery, Popper, BootstrapJS -->
 <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>

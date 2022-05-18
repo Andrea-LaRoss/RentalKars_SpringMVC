@@ -34,14 +34,8 @@
 
                 <sec:authorize access="hasAnyRole('USER', 'ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="<spring:url value="/reservations/"/>">Prenotazioni</a>
+                    <a class="nav-link" href="<spring:url value="/dashboard/"/>">Dahsboard</a>
                 </li>
-                </sec:authorize>
-
-                <sec:authorize access="hasRole('ADMIN')">
-                    <li class="nav-item">
-                        <a class="nav-link" href="<spring:url value="/users/"/>">Lista Utenti</a>
-                    </li>
                 </sec:authorize>
 
                 <sec:authorize access="isAuthenticated()">

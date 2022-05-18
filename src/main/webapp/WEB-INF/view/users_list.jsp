@@ -42,7 +42,7 @@
                 <td>${user.birthday}</td>
                 <td>${user.email}</td>
                 <td>
-                    <a class="btn btn-outline-primary" href="<spring:url value="/users/update/${user.id}"/>">Modifica</a>
+                    <a class="btn btn-outline-primary" href="<spring:url value="/users/update/${user.email}"/>">Modifica</a>
                     <a class="btn btn-outline-danger" href="<spring:url value="/users/remove/${user.id}"/>" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
                 </td>
             </tr>

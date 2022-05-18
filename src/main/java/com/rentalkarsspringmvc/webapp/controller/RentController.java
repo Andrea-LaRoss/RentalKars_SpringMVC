@@ -105,7 +105,7 @@ public class RentController {
         Rent rent = rentService.selById(id);
         rent.setStartDate(rentForm.getStartDate());
         rent.setEndDate(rentForm.getEndDate());
-        rent.setStatus("In attesa");
+        rent.setStatus("In Attesa");
         rentService.updateReservation(rent);
 
         return "redirect:/reservations";

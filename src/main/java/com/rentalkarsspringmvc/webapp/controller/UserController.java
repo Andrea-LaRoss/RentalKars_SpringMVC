@@ -57,10 +57,12 @@ public class UserController {
     }
 
 
-    @GetMapping("/update/{id}")
-    public String updateUserForm(@PathVariable("id") String id, Model model) {
+    @GetMapping("/update/{email}")
+    public String updateUserForm(@PathVariable("email") String email, Model model) {
 
-        User user = userService.selById(Long.valueOf(id));
+        User user = userService.validateUser(new SpringSecurityUserContext().getCurrentUser());
+
+        user.setPassword("");
 
         model.addAttribute("Titolo", "Modifica utente");
         model.addAttribute("userForm", user);
@@ -70,15 +72,15 @@ public class UserController {
     }
 
 
-    @PostMapping("/update/{id}")
-    public String updateUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, @PathVariable("id") String id, Model model) {
+    @PostMapping("/update/{email}")
+    public String updateUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, @PathVariable("email") String email, Model model) {
 
         if(result.hasErrors()) {
             model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "user_form";
         }
 
-        User user = userService.selById(Long.valueOf(id));
+        User user = userService.validateUser(email);
         user.setFirstName(userForm.getFirstName());
         user.setLastName(userForm.getLastName());
         user.setPassword(passwordEncoder.encode(userForm.getPassword()));

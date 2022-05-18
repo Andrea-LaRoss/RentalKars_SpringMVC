@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             "/users/add/**",
             "/users/remove/**",
-            "/users/**",
+            "/users",
 
             "/reservations/approve/**"
     };

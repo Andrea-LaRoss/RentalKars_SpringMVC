@@ -10,7 +10,7 @@
 
 <div class="container">
 
-    <form:form method="POST" modelAttribute="userForm">
+    <form:form method="POST" modelAttribute="user">
         <form:errors path="*" cssClass="alert alert-danger" element="div"/>
         <div class="form-group">
 

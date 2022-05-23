@@ -18,7 +18,10 @@ public class UserServiceImpl implements UserService{
     public void saveUser(User user) { userRepository.saveUser(user); }
 
     @Override
-    public void updateUser(User user) { userRepository.updateUser(user); }
+    public void updateUser(User user, String email) {
+        User nUser = userRepository.validateUser(email);
+        nUser.setEmail(user.getEmail());
+        userRepository.updateUser(nUser); }
 
     @Override
     public void removeUser(User user) { userRepository.removeUser(user); }

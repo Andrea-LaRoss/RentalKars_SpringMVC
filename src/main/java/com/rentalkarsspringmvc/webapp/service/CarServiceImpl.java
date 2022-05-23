@@ -18,9 +18,15 @@ public class CarServiceImpl implements CarService{
         carRepository.saveCar(car);
     }
 
+    
     @Override
-    public void updateCar(Car car) { carRepository.updateCar(car); }
+    public void updateCar(Car car) {
 
+        carRepository.updateCar(car);
+    
+    }
+
+    
     @Override
     public void removeCar(Car car) { carRepository.removeCar(car); }
 

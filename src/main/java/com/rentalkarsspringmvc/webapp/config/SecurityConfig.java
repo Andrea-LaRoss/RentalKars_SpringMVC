@@ -47,9 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     public static final String[] ADMIN_URL_MATCHER = {
-            "/cars/add/**",
+            "/cars/form/**",
             "/cars/remove/**",
-            "/cars/update/**",
 
             "/users/add/**",
             "/users/remove/**",

@@ -92,13 +92,6 @@
             <version>2.1.5.RELEASE</version>
         </dependency>
 
-        <!-- Hibernate C3P0 -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
         <!-- Hibernate Validator -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>

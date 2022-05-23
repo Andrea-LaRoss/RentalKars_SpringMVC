@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div class="container">
     <h2>${Titolo}</h2>
@@ -30,7 +31,7 @@
                 <td>${car.regDate}</td>
                 <td>
                     <sec:authorize access="hasRole('ADMIN')">
-                        <a class="btn btn-outline-primary" href="<spring:url value="/cars/update/${car.id}" />">Modifica</a>
+                        <a class="btn btn-outline-primary" href="<spring:url value="/cars/form?id=${car.id}" />" >Modifica</a>
                         <a class="btn btn-outline-danger" href="<spring:url value="/cars/remove/${car.id}" />" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
                     </sec:authorize>
                 </td>
@@ -41,7 +42,7 @@
 
     <sec:authorize access="hasRole('ADMIN')">
         <div class="d-grid gap-2">
-            <a class="btn btn-lg btn-primary" href="<spring:url value="/cars/add" />"><strong>Aggiungi</strong></a>
+            <a class="btn btn-lg btn-primary" href="<spring:url value="/cars/form" />"><strong>Aggiungi</strong></a>
         </div>
     </sec:authorize>
 </div>

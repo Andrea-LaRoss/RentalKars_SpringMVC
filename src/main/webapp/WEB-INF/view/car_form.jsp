@@ -9,39 +9,39 @@
 
 <div class="container">
 
-    <form:form method="POST" modelAttribute="carForm">
+    <form:form method="POST" modelAttribute="car">
         <form:errors path="*" cssClass="alert alert-danger" element="div"/>
         <div class="form-group">
 
             <div class="form-floating mb-4">
-                <form:input type="text" class="form-control" path="manufacturer"/>
+                <form:input type="text" class="form-control" name="manufacturer" path="manufacturer"/>
                 <label for="manufacturer">Marca</label>
             </div>
 
             <div class="form-floating mb-4">
-                <form:input type="text" class="form-control" path="model"/>
+                <form:input type="text" class="form-control" name="model" path="model"/>
                 <label for="model">Modello</label>
             </div>
 
             <div class="form-floating mb-4">
-                <form:input type="text" class="form-control" path="type"/>
+                <form:input type="text" class="form-control" name="type" path="type"/>
                 <label for="type">Tipo</label>
             </div>
 
             <div class="form-floating mb-4">
-                <form:input type="text" class="form-control" path="numPlate"/>
+                <form:input type="text" class="form-control" name="numPlate" path="numPlate"/>
                 <label for="numPlate">Targa</label>
             </div>
 
             <div class="form-floating mb-4">
-                <form:input type="date" class="form-control" path="regDate"/>
+                <form:input type="date" class="form-control" name="regDate" path="regDate"/>
                 <label for="regDate">Immatricolazione</label>
             </div>
 
         </div>
 
         <div class="d-grid gap-2">
-            <input class="btn btn-lg btn-primary" type="submit" value="Aggiungi">
+            <input class="btn btn-lg btn-primary" type="submit" value="Salva">
         </div>
     </form:form>
 

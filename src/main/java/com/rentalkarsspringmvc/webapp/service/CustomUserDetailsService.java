@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    @Transactional
+
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         if(email == null) {

@@ -1,6 +1,7 @@
 package com.rentalkarsspringmvc.webapp.controller;
 
 import com.rentalkarsspringmvc.webapp.config.SpringSecurityUserContext;
+import com.rentalkarsspringmvc.webapp.entities.Car;
 import com.rentalkarsspringmvc.webapp.entities.User;
 import com.rentalkarsspringmvc.webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,68 +26,37 @@ public class UserController {
     private BCryptPasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/add")
-    public String saveUserForm(@ModelAttribute("userForm") User userForm, Model model) {
+    @GetMapping("/form/{email}/")
+    public String userForm(@ModelAttribute("user") User user, @PathVariable (value = "email") String email, Model model) {
 
-        model.addAttribute("userForm", userForm);
-        model.addAttribute("Titolo", "Aggiungi utente");
-        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
-
-        return "user_form";
-
-    }
-
-    @PostMapping("/add")
-    public String saveUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, Model model) {
-
-        if(result.hasErrors()) {
-            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
-            return "user_form";
+        if(!email.equals("new")) {
+            user = userService.validateUser(email);
+            user.setPassword("");
+        } else {
+            user.setEmail("");
         }
 
-        User user = new User();
-        user.setFirstName(userForm.getFirstName());
-        user.setLastName(userForm.getLastName());
-        user.setPassword(passwordEncoder.encode(userForm.getPassword()));
-        user.setEmail(userForm.getEmail());
-        user.setBirthday(userForm.getBirthday());
-        userService.saveUser(user);
-
-        return "redirect:/users";
-
-    }
-
-
-    @GetMapping("/update/{email}")
-    public String updateUserForm(@PathVariable("email") String email, Model model) {
-
-        User user = userService.validateUser(new SpringSecurityUserContext().getCurrentUser());
-
-        user.setPassword("");
-
-        model.addAttribute("Titolo", "Modifica utente");
-        model.addAttribute("userForm", user);
+        model.addAttribute("user", user);
+        model.addAttribute("Titolo", "Form Utente");
         model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "user_form";
     }
 
 
-    @PostMapping("/update/{email}")
-    public String updateUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult result, @PathVariable("email") String email, Model model) {
+    @PostMapping("/form/{email}/")
+    public String userFormSubmit(@Valid @ModelAttribute("user") User user, @PathVariable("email") String email, BindingResult result, Model model) {
 
         if(result.hasErrors()) {
             model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "user_form";
         }
 
-        User user = userService.validateUser(email);
-        user.setFirstName(userForm.getFirstName());
-        user.setLastName(userForm.getLastName());
-        user.setPassword(passwordEncoder.encode(userForm.getPassword()));
-        user.setEmail(userForm.getEmail());
-        user.setBirthday(userForm.getBirthday());
-        userService.updateUser(user);
+        if(!email.equals("new")) {
+            userService.updateUser(user, email);
+        } else {
+            userService.saveUser(user);
+        }
 
         return "redirect:/users";
 
@@ -116,7 +86,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public String searchUserFirstName(@RequestParam("filter") String filter, @RequestParam("value") String value, Model model) {
+    public String searchUser(@RequestParam("filter") String filter, @RequestParam("value") String value, Model model) {
 
         List<User> users = new ArrayList<>();
 

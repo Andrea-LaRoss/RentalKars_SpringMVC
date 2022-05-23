@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,65 +20,34 @@ public class CarController {
     @Autowired
     private CarService carService;
 
+    @GetMapping("/form")
+    public String carForm(@ModelAttribute("car") Car car, @RequestParam (value = "id", required = false) Long id, Model model) {
 
+        if(id != null) {
+            car = carService.selById(id);
+        }
 
-    @GetMapping("/add")
-    public String saveCarForm(@ModelAttribute("carForm") Car carForm, Model model) {
-
-        model.addAttribute("carForm", carForm);
-        model.addAttribute("Titolo", "Aggiungi auto");
+        model.addAttribute("car", car);
+        model.addAttribute("Titolo", "Form auto");
         model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
 
         return "car_form";
-
     }
 
 
-    @PostMapping ("/add")
-    public String saveCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, Model model) {
+    @PostMapping("/form")
+    public String carFormSubmit(@Valid @ModelAttribute("car") Car car, BindingResult result, @PathVariable (value = "id", required = false) Long id, Model model) {
 
         if(result.hasErrors()) {
             model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
             return "car_form";
         }
 
-        carService.saveCar(carForm);
-        return "redirect:/cars";
-
-    }
-
-
-    @GetMapping ("/update/{id}")
-    public String updateCarForm(@PathVariable("id") String id, Model model) {
-
-        Car car = carService.selById(Long.valueOf(id));
-
-        model.addAttribute("Titolo", "Modifica auto");
-        model.addAttribute("carForm", car);
-        model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
-
-        return "car_form";
-
-    }
-
-
-    @PostMapping("/update/{id}")
-    public String updateCar(@Valid @ModelAttribute("carForm") Car carForm, BindingResult result, @PathVariable("id") String id, Model model) {
-
-        if(result.hasErrors()) {
-            model.addAttribute("User", new SpringSecurityUserContext().getCurrentUser());
-            return "car_form";
+        if(id != null) {
+            carService.updateCar(car);
+        } else {
+            carService.saveCar(car);
         }
-
-        Car car = carService.selById(Long.valueOf(id));
-        car.setManufacturer(carForm.getManufacturer());
-        car.setModel(carForm.getModel());
-        car.setType(carForm.getType());
-        car.setNumPlate(carForm.getNumPlate());
-        car.setNumPlate(carForm.getNumPlate());
-        car.setRegDate(carForm.getRegDate());
-
-        carService.updateCar(car);
 
         return "redirect:/cars";
 
@@ -85,9 +55,9 @@ public class CarController {
 
 
     @GetMapping("/remove/{id}")
-    public String deleteCar(@PathVariable("id") String id, Model model) {
+    public String deleteCar(@PathVariable("id") Long id) {
 
-        Car car = carService.selById(Long.valueOf(id));
+        Car car = carService.selById(id);
         carService.removeCar(car);
 
         return "redirect:/cars";

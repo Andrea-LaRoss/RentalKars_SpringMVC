@@ -42,7 +42,7 @@
                 <td>${user.birthday}</td>
                 <td>${user.email}</td>
                 <td>
-                    <a class="btn btn-outline-primary" href="<spring:url value="/users/update/${user.email}"/>">Modifica</a>
+                    <a class="btn btn-outline-primary" href="<spring:url value="/users/form/${user.email}/"/>">Modifica</a>
                     <a class="btn btn-outline-danger" href="<spring:url value="/users/remove/${user.id}"/>" onclick="if(!(confirm('Sei sicuro?'))) return false">Elimina</a>
                 </td>
             </tr>
@@ -51,7 +51,7 @@
     </table>
 
         <div class="d-grid gap-2">
-            <a class="btn btn-lg btn-primary" href="<spring:url value="/users/add"/>"><strong>Aggiungi</strong></a>
+            <a class="btn btn-lg btn-primary" href="<spring:url value="/users/form/new/"/>"><strong>Aggiungi</strong></a>
         </div>
 
 </div>
